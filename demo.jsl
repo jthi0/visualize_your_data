@@ -1,65 +1,77 @@
 Names Default To Here(1);
 
-Include("bin/f_anscombe.jsl");
-Include("bin/f_datasaurusdozen.jsl");
+Try(
+	Include("bin/f_anscombe.jsl");
+	Include("bin/f_datasaurusdozen.jsl");
 
-// anscombe
-dt_anscombe = Open("$SAMPLE_DATA/anscombe.jmp", invisible);
-dt_anscombe << Clear Row States;
+	// anscombe
+	dt_anscombe = Open("$SAMPLE_DATA/anscombe.jmp", invisible);
+	dt_anscombe << Clear Row States;
 
-aa_anscombe = Associative Array();
-aa_anscombe["quartet1"] = desc_statistics_anscombe(dt_anscombe, "X1", "Y1");
-aa_anscombe["quartet2"] = desc_statistics_anscombe(dt_anscombe, "X2", "Y2");
-aa_anscombe["quartet3"] = desc_statistics_anscombe(dt_anscombe, "X3", "Y3");
-aa_anscombe["quartet4"] = desc_statistics_anscombe(dt_anscombe, "X4", "Y4");
+	aa_anscombe = Associative Array();
+	aa_anscombe["quartet1"] = desc_statistics_anscombe(dt_anscombe, "X1", "Y1");
+	aa_anscombe["quartet2"] = desc_statistics_anscombe(dt_anscombe, "X2", "Y2");
+	aa_anscombe["quartet3"] = desc_statistics_anscombe(dt_anscombe, "X3", "Y3");
+	aa_anscombe["quartet4"] = desc_statistics_anscombe(dt_anscombe, "X4", "Y4");
 
-// datasaurus dozen
-If(File Exists("datasets/DatasaurusDozen.jmp"),
-	dt_datasaurusdozen = Open("datasets/DatasaurusDozen.jmp", invisible);
-,
-	fpath = Pick File(
-		"Select Datasaurus Dozen JMP File",
-		"$DOCUMENTS",
-		{"JMP Files|jmp;", "tsv|tsv;"},
-		1,
-		0
+	// datasaurus dozen
+	If(File Exists("datasets/DatasaurusaDozen.jmp"),
+		dt_datasaurusdozen = Open("datasets/DatasaurusDozen.jmp", invisible);
+	,
+		fpath = Pick File(
+			"Select Datasaurus Dozen JMP File",
+			"$DOCUMENTS",
+			{"JMP/tsv Files|jmp;tsv"},
+			1,
+			0
+		);
+		dt_datasaurusdozen = Open(fpath, invisible);
 	);
-	dt = Open(dt_datasaurusdozen, invisible);
-);
 
-aa_datasaurusdozen = Associative Array();
-For Each({key}, Associative Array(:dataset) << get keys,
-	m = dt_datasaurusdozen[Loc(dt_datasaurusdozen[0, "dataset"], key), 2::3];
-	aa_datasaurusdozen[key] = desc_statistics_dino(m);
-);
+	aa_datasaurusdozen = Associative Array();
+	For Each({key}, Associative Array(:dataset) << get keys,
+		m = dt_datasaurusdozen[Loc(dt_datasaurusdozen[0, "dataset"], key), 2::3];
+		aa_datasaurusdozen[key] = desc_statistics_dino(m);
+	);
 
-nw = New Window("Visualize your data",
-		V List Box(align("center"),
-			Text Box("Remember to Visualize Your Data", << Set Font Size(18)),
-			H List Box(
-				Text Box("Change point Transparency ("),
-				Text Box("0.00"),
-				Text Box(")"),
-				sb = Slider Box(0, 1, 0, << Set Function(function({this},
-					cur_val = this << get;
-					frames = (this << top parent) << XPath("//FrameBox");
-					segs = frames << Find Seg(Marker Seg(1));
-					Eval(EvalExpr(segs << Set Transparency(Expr(cur_val))));
-					((this << prev sib) << prev sib) << Set Text(Char(cur_val, , 2)))
-				))
-			),
-			Tab Box(
-				Tab Page Box("Anscombe's Quartet",
-					vlb_anscombe(dt_anscombe, aa_anscombe)
+	nw = New Window("Visualize your data",
+			V List Box(align("center"),
+				Text Box("Remember to Visualize Your Data", << Set Font Size(18)),
+				H List Box(
+					Text Box("Change point Transparency ("),
+					Text Box("0.00"),
+					Text Box(")"),
+					sb = Slider Box(0, 1, 0, << Set Function(function({this},
+						cur_val = this << get;
+						frames = (this << top parent) << XPath("//FrameBox");
+						segs = frames << Find Seg(Marker Seg(1));
+						Eval(EvalExpr(segs << Set Transparency(Expr(cur_val))));
+						((this << prev sib) << prev sib) << Set Text(Char(cur_val, , 2)))
+					))
 				),
-			Tab Page Box("Datasaurus Dozen",
-				vlb = vlb_datasaurusdozen(dt_datasaurusdozen, aa_datasaurusdozen)
+				Tab Box(
+					Tab Page Box("Anscombe's Quartet",
+						vlb_anscombe(dt_anscombe, aa_anscombe)
+					),
+				Tab Page Box("Datasaurus Dozen",
+					vlb = vlb_datasaurusdozen(dt_datasaurusdozen, aa_datasaurusdozen)
+				)
 			)
 		)
-	)
-);
+	);
 
-nw << On Close(
+	nw << On Close(
+		Try(Close(dt_anscombe, no save));
+		Try(Close(dt_datasaurusdozen, no save));
+	);
+
+	Write();
+,
+	New Window("ERROR", << Modal,
+		Text box("ERROR DURING STARTUP");
+		Text Box(char(exception_msg));
+	);
+	Show(exception_msg);
 	Try(Close(dt_anscombe, no save));
 	Try(Close(dt_datasaurusdozen, no save));
 );
