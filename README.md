@@ -1,5 +1,5 @@
 # visualize_your_data
-Quick demo to demonstrate how important it is to visualize your data and not just trust descriptive statistics. Usable with JMP. This has also been posted to [JMP User Community - Remember to visualize your data](https://community.jmp.com/t5/forums/postpage/board-id/discussions/load-autosave/true). 
+Quick demo to demonstrate how important it is to visualize your data and not just trust descriptive statistics. Usable with JMP. This has also been posted to [JMP User Community - Remember to visualize your data](https://community.jmp.com/t5/forums/postpage/board-id/discussions/load-autosave/true). JMP16 or newer is required to use the demo.
 
 ## Anscombe's Quartet
 Anscombe's Quartet is a data set collection of four different data sets. These four data sets all have similar descriptive statistics, but different distributions and they are very different when plotted as scatterplot. This data set is commonly used to demonstrate the **importance of data visualization**.
@@ -64,6 +64,9 @@ _Datasaurus Dozen visualized with JMP's Graph Builder using using DatasaurusDoze
 </center>
 
 ## Demo
+### Note
+This script does require JMP16 or newer.
+
 The _demo.jsl_ found from this repository will create user-interface with all the different data sets (Anscombe's and Datasaurus Dozen are separated to their own tabs). Then the script is run user will see only fitted lines and summary statistics for all data sets. User can then use slider box found from top of the window to increase the visibility of markers in the graphs.
 
 The images below demonstate the usage of visiblity slider box on two of the graphs: Ancombes' Quartet 1 and Datasaurus Dozen's dino.
