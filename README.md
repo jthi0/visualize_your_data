@@ -1,5 +1,5 @@
 # visualize_your_data
-Quick demo to demonstrate how important it is to visualize your data and not just trust descriptive statistics. Usable with JMP. This has also been posted to [JMP User Community - Remember to visualize your data](https://community.jmp.com/t5/forums/postpage/board-id/discussions/load-autosave/true). JMP16 or newer is required to use the demo.
+Quick demo to demonstrate how important it is to visualize your data and not just trust descriptive statistics. Usable with JMP. This has also been posted to [JMP User Community - Remember to visualize your data](https://community.jmp.com/t5/Discussions/Remember-to-visualize-your-data/m-p/557745). JMP16 or newer is required to use the demo.
 
 ## Anscombe's Quartet
 Anscombe's Quartet is a data set collection of four different data sets. These four data sets all have similar descriptive statistics, but different distributions and they are very different when plotted as scatterplot. This data set is commonly used to demonstrate the **importance of data visualization**.
@@ -87,7 +87,7 @@ _Datasaurus Dozen markers invisible on left and visible on right_
 ### Note
 This github repository doesn't include the datasaurus dozen dataset as I'm not sure if I can freely use it. You can find the data from [Same Stats Different Graphs (autodesk.com)](https://www.autodesk.com/research/publications/same-stats-different-graphs) and then convert it to .jmp file easily. Save the dataset to datasets folder with name "DatasaurusDozen.jmp" and demo.jsl will automatically load it. If the file isn't find it will ask you to pick the file location.
 
-Alternatively you can use the .zip file found from JMP community to run the tool [Remember to visualize your data](https://community.jmp.com/t5/forums/postpage/board-id/discussions/load-autosave/true). 
+Alternatively you can use the .zip file found from JMP community to run the tool [Remember to visualize your data](https://community.jmp.com/t5/Discussions/Remember-to-visualize-your-data/m-p/557745). 
 
 
 
