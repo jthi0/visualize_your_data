@@ -71,7 +71,7 @@ JMP has also made their own example data table which demonstrates exactly same m
 
 <center>
 
-![JMP Man](images/jmpman.png)
+![JMP Man](images/jmpman1.png)
 
 </center>
 
