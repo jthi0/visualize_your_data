@@ -1,0 +1,96 @@
+Names Default To Here(1);
+
+desc_statistics_jmp = function({m}, {Default Local},
+	// mean x/y, variance x/y, correlation, linear regression line, R^2
+	aa_statistics = Associative Array();
+	
+	aa_statistics["mean_x"] = Mean(m[0,1]);
+	aa_statistics["mean_y"] = Mean(m[0,2]);
+	aa_statistics["sd_x"] = StdDev(m[0,1]);
+	aa_statistics["sd_y"] = StdDev(m[0,2]);
+
+	{Estimates, Std_Error, Diagnostics} = Linear Regression(m[0,1], m[0,2]);
+	aa_statistics["RegIntercept"] = Estimates[1];
+	aa_statistics["Regbeta"] = Estimates[2];
+	aa_statistics["RegrLineStr"] = Char(Estimates[1], , 0) || " + " || Char(Estimates[2], , 1) || "x";// we will round these
+	aa_statistics["RSquare"] = Diagnostics["RSquare"];
+	aa_statistics["Correlation"] = Correlation(m)[2];
+	
+	return(aa_statistics);
+);
+
+create_statistics_table_jmp = function({aa}, {Default Local},
+	tb = Table Box(
+		String Col Box("Statistic", {"Mean X", "Mean Y", "StdDev X", "StdDev Y", "Correlation", "Regr Line", "R^2"}),
+		scb = String Col Box("Value", {});
+	);
+	scb << Add Element(Char(aa["mean_x"],,2));
+	scb << Add Element(Char(aa["mean_y"],,2));
+	scb << Add Element(Char(aa["sd_x"],,3));
+	scb << Add Element(Char(aa["sd_y"],,3));
+	scb << Add Element(Char(aa["Correlation"],,3));
+	scb << Add Element(Char(aa["RegrLineStr"]));
+	scb << Add Element(Char(aa["RSquare"],2));
+	
+	return(tb);
+);
+
+create_gb_jmp = function({dt, aa_all, dataset}, {Default Local},
+	aa = aa_all[dataset];
+	Eval(EvalExpr(gb = V List Box(Expr(dt) << Graph Builder(
+		Size(300, 250),
+		Show Control Panel(0),
+		Show Legend(0),
+		Show Title(0),
+		Variables(X(:x), Y(:y), Group X(:Data Set)),
+		Elements(Points(X, Y, Legend(3))),
+		Where(:Data Set == Expr(dataset)),
+		SendToReport(
+			Dispatch({}, "X", ScaleBox, {Min(0), Max(95), Inc(5), Minor Ticks(0)}),
+			Dispatch({}, "Y", ScaleBox, {Min(0), Max(95), Inc(5), Minor Ticks(0)}),
+			Dispatch({}, "400", ScaleBox, {Legend Model(3, Properties(0, {Line Color(6), Transparency(0)}, Item ID("Y", 1)))}),
+			Dispatch({}, "Graph Builder", FrameBox, {
+				Marker Size(6), Marker Drawing Mode("Normal"),
+				Add Graphics Script(
+					Pen Color("blue");
+					Pen Size(2);
+					Y Function(Expr(aa["RegIntercept"]) + Expr(aa["Regbeta"]) * x, x); // we CAN'T hardcode this here
+				)
+			})
+		)
+	))));
+	(gb << XPath("//TextBox[contains(text(), 'Where(:')]")) << Visibility("Collapse");
+	return(gb);
+);
+
+create_jmpmandozen_lub = function({dt_jmpmandozen, aa_jmpmandozen, dataset}, {Default Local},
+	lub = Lineup Box(N Col(2));
+	lub << Append(create_gb_jmp(dt_jmpmandozen, aa_jmpmandozen, dataset));
+	lub << Append(create_statistics_table_jmp(aa_jmpmandozen[dataset]));
+	return(lub);
+);
+
+vlb_jmpmandozen = function({dt_jmpmandozen, aa_jmpmandozen}, {Default Local},
+	vlb = V List Box(align("center"),
+		H List Box(align("center"),
+			Text Box("JMP Man Dozen", << Set Font Size(18)),
+			Button Box("jmp.com", Web("https://www.jmp.com/support/help/en/16.2/#page/jmp/visualize-your-data.shtml"), << Underline Style(1))
+		),
+		Lineup Box(N Col(4),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "jmpman"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "bullseye"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "circle"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "dots"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "down_parab"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "h_lines"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "high_lines"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "slant_down"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "slant_up"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "star"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "v_lines"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "wide_lines"),
+			create_jmpmandozen_lub(dt_jmpmandozen, aa_jmpmandozen, "x")
+		)
+	);
+	return(vlb);
+);

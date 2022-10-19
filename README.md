@@ -66,6 +66,16 @@ _Datasaurus Dozen visualized with JMP's Graph Builder using using DatasaurusDoze
 
 </center>
 
+# JMP Man Dozen 
+JMP has also made their own example data table which demonstrates exactly same method as Datasaurus Dozen. JMP used their JMP man and then used same code which was demonstrated by Matejka and Fitzmaurice (2017). This has also been added in an update to _demo.jsl_.
+
+<center>
+
+![JMP Man](images/jmpman.png)
+
+</center>
+
+
 # Demo
 ## Note
 This script does require JMP16 or newer.

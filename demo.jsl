@@ -3,7 +3,8 @@ Names Default To Here(1);
 Try(
 	Include("bin/f_anscombe.jsl");
 	Include("bin/f_datasaurusdozen.jsl");
-
+	Include("bin/f_jmpmandozen.jsl");
+	
 	// anscombe
 	dt_anscombe = Open("$SAMPLE_DATA/anscombe.jmp", invisible);
 	dt_anscombe << Clear Row States;
@@ -34,6 +35,14 @@ Try(
 		aa_datasaurusdozen[key] = desc_statistics_dino(m);
 	);
 
+
+	dt_jmpmandozen = Open("$SAMPLE_DATA/JMP Man Dozen.jmp");
+	aa_jmpmandozen = Associative Array();
+	For Each({key}, Associative Array(:Data Set) << get keys,
+		m = dt_jmpmandozen[Loc(dt_jmpmandozen[0, "Data Set"], key), 2::3];
+		aa_jmpmandozen[key] = desc_statistics_jmp(m);
+	);
+	
 	nw = New Window("Visualize your data",
 			V List Box(align("center"),
 				Text Box("Remember to Visualize Your Data", << Set Font Size(18)),
@@ -55,6 +64,9 @@ Try(
 					),
 				Tab Page Box("Datasaurus Dozen",
 					vlb = vlb_datasaurusdozen(dt_datasaurusdozen, aa_datasaurusdozen)
+				),
+				Tab Page Box("JMP Man Dozen",
+					vlb = vlb_jmpmandozen(dt_jmpmandozen, aa_jmpmandozen)
 				)
 			)
 		)
@@ -63,6 +75,7 @@ Try(
 	nw << On Close(
 		Try(Close(dt_anscombe, no save));
 		Try(Close(dt_datasaurusdozen, no save));
+		Try(Close(dt_jmpmandozen, no save));
 	);
 
 	Write();
