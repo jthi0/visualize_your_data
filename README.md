@@ -1,14 +1,17 @@
 # visualize_your_data
 Quick demo to demonstrate how important it is to visualize your data and not just trust descriptive statistics. Usable with JMP. This has also been posted to [JMP User Community - Remember to visualize your data](https://community.jmp.com/t5/Discussions/Remember-to-visualize-your-data/m-p/557745). JMP16 or newer is required to use the demo.
 
-## Anscombe's Quartet
+# TL;DR (too long; didn't read)
+**Visualize your data**. It is very difficult to "see" underlying patterns, outliers and so on just based on descriptive/summary statistics. Visualize your data in different ways: use distributions/scatterplots/boxplots/heatmaps... depending on the software you have available. This repository demonstrates with JMP, usage of two different data set collections to illustrate how important it is to visualize data and to not just rely on summary statistics.
+
+# Anscombe's Quartet
 Anscombe's Quartet is a data set collection of four different data sets. These four data sets all have similar descriptive statistics, but different distributions and they are very different when plotted as scatterplot. This data set is commonly used to demonstrate the **importance of data visualization**.
 
 Table below demonstrates the statistics which are similar to some decimal point (slighly modified from orignal as StdDev is used instead of variance).
 
 <center>
 
-_Anscombe's Quartete datasets descriptive statistics_
+_Anscombe's Quartet datasets descriptive statistics_
 | Statistic  | Value |
 | ------------- | ------------- |
 | Mean X  | 9  |
@@ -63,8 +66,8 @@ _Datasaurus Dozen visualized with JMP's Graph Builder using using DatasaurusDoze
 
 </center>
 
-## Demo
-### Note
+# Demo
+## Note
 This script does require JMP16 or newer.
 
 The _demo.jsl_ found from this repository will create user-interface with all the different data sets (Anscombe's and Datasaurus Dozen are separated to their own tabs). Then the script is run user will see only fitted lines and summary statistics for all data sets. User can then use slider box found from top of the window to increase the visibility of markers in the graphs.
@@ -91,7 +94,7 @@ Alternatively you can use the .zip file found from JMP community to run the tool
 
 
 
-## Sources
+# Sources
 * Anscombe, F. J. (1973). Graphs in Statistical Analysis. American Statistician. 27 (1): 17–21.
 * Matejka, J. and Fitzmaurice, G. 2017. Same stats, different graphs: generating datasets with varied appearance and identical statistics through simulated annealing. In Proceedings of the 2017 CHI conference on human factors in computing systems (pp. 1290-1294). Cited: 2022-10-19. Available: https://doi.org/10.1145/3025453.3025912
 * Matejka, J. and Fitzmaurice, G. Same Stats Different Graphs. Cited: 2022-10-19. Available: https://www.autodesk.com/research/publications/same-stats-different-graphs
